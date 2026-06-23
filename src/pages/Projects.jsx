@@ -22,30 +22,25 @@ import ProjectForm from "../components/ProjectForm";
 function Projects(){
 
 
-
 const [projects,setProjects]=useState([
-
 
 {
 id:1,
 name:"Portfolio Website",
 description:"React website",
-status:"Completed",
+status:"completed",
 deadline:"June 2026"
 },
-
 
 {
 id:2,
 name:"Expense Tracker",
 description:"Finance app",
-status:"Progress",
+status:"progress",
 deadline:"July 2026"
 }
 
-
 ]);
-
 
 
 const [search,setSearch]=useState("");
@@ -386,7 +381,7 @@ return(
 
 
 
-    {/* VIEW DIALOG */}
+   
 
     <Dialog
       open={viewOpen}
