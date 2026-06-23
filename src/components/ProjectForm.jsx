@@ -1,40 +1,26 @@
-import React, {useState} from "react";
-
+import React, { useState } from "react";
 
 import {
-
-TextField,
-
-Button,
-
-Box,
-
-Select,
-
-MenuItem,
-
-InputLabel,
-
-FormControl
-
+  Button,
+  Box
 } from "@mui/material";
 
-
-import {useForm, Controller} from "react-hook-form";
-
+import { useForm } from "react-hook-form";
 
 
+import FormTextField from "./SingleLineTextfield";
+import MultilineTextField from "./MultilineTextField";
+import Deadline from "./Deadline";
+import DropDown from "./DropDown";
+import ImageInput from "./ImageInput";
 
-function ProjectForm({addProject, project}) {
 
+function ProjectForm({addProject, project}){
 
 
 const [image,setImage]=useState(
-
 project?.image || null
-
 );
-
 
 
 
@@ -44,7 +30,9 @@ register,
 
 handleSubmit,
 
-control
+control,
+
+formState:{errors}
 
 }=useForm({
 
@@ -59,11 +47,7 @@ status:"active"
 
 
 
-
-
-
 return(
-
 
 
 <Box
@@ -85,7 +69,6 @@ image:image
 })}
 
 
-
 sx={{
 
 display:"flex",
@@ -104,22 +87,22 @@ mt:2
 
 
 
+<FormTextField
+
+register={register}
+
+error={errors.name}
+
+/>
 
 
 
 
-<TextField
+<MultilineTextField
 
+register={register}
 
-label="Name"
-
-
-{...register("name",{
-
-required:"Name is required"
-
-})}
-
+error={errors.description}
 
 />
 
@@ -127,120 +110,11 @@ required:"Name is required"
 
 
 
-
-
-<TextField
-
-
-label="Description"
-
-
-{...register("description",{
-
-required:"Description is required"
-
-})}
-
-
-/>
-
-
-
-
-
-
-
-<FormControl fullWidth>
-
-
-<InputLabel>Status</InputLabel>
-
-
-
-<Controller
-
-
-name="status"
+<DropDown
 
 control={control}
 
-defaultValue="active"
-
-
-render={({field})=>(
-
-
-
-<Select
-
-{...field}
-
-label="Status"
-
->
-
-
-
-<MenuItem value="active">
-
-Active
-
-</MenuItem>
-
-
-
-
-<MenuItem value="progress">
-
-Progress
-
-</MenuItem>
-
-
-
-
-<MenuItem value="completed">
-
-Completed
-
-</MenuItem>
-
-
-
-</Select>
-
-
-)}
-
-
-/>
-
-
-</FormControl>
-
-
-
-
-
-
-
-
-
-<input
-
-type="file"
-
-accept="image/*"
-
-
-onChange={(e)=>{
-
-
-setImage(e.target.files[0])
-
-
-}}
-
+error={errors.status}
 
 />
 
@@ -248,22 +122,11 @@ setImage(e.target.files[0])
 
 
 
+<Deadline
 
+register={register}
 
-
-
-<TextField
-
-
-label="Deadline"
-
-
-{...register("deadline",{
-
-required:"Deadline is required"
-
-})}
-
+error={errors.deadline}
 
 />
 
@@ -271,6 +134,11 @@ required:"Deadline is required"
 
 
 
+<ImageInput
+
+setImage={setImage}
+
+/>
 
 
 
@@ -289,11 +157,7 @@ Save
 
 
 
-
-
-
 </Box>
-
 
 
 )
