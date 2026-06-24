@@ -2,21 +2,19 @@ import React from "react";
 import { TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 
-function Deadline({ control }) {
+function FormTextField({ name, label, control, rules, multiline = false, rows = 1 }) {
   return (
     <Controller
-      name="deadline"
+      name={name}
       control={control}
-      rules={{ required: "Deadline is required" }}
+      rules={rules}
       render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
-          label="Deadline"
-          type="date"
+          label={label}
           fullWidth
-          InputLabelProps={{
-            shrink: true,
-          }}
+          multiline={multiline}
+          rows={multiline ? rows : undefined}
           error={!!error}
           helperText={error?.message}
         />
@@ -25,4 +23,4 @@ function Deadline({ control }) {
   );
 }
 
-export default Deadline;
+export default FormTextField;

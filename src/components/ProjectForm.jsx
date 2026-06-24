@@ -1,170 +1,74 @@
 import React, { useState } from "react";
-
-import {
-  Button,
-  Box
-} from "@mui/material";
-
+import { Button, Box } from "@mui/material";
 import { useForm } from "react-hook-form";
 
-
-import FormTextField from "./SingleLineTextfield";
-import MultilineTextField from "./MultilineTextField";
+// Updated Imports (MultilineTextField ko remove kar diya)
+import FormTextField from "./FormTextField";
 import Deadline from "./Deadline";
 import DropDown from "./DropDown";
 import ImageInput from "./ImageInput";
 
+function ProjectForm({ addProject, project }) {
+  const [image, setImage] = useState(project?.image || null);
 
-function ProjectForm({addProject, project}){
+  // register aur errors ko nikal diya hai, sirf control use hoga
+  const { handleSubmit, control } = useForm({
+    defaultValues: project || {
+      name: "",
+      description: "",
+      status: "active",
+      deadline: "",
+    },
+  });
 
+  return (
+    <Box
+      component="form"
+      onSubmit={handleSubmit((data) => {
+        addProject({
+          ...data,
+          image: image,
+        });
+      })}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        mt: 2,
+      }}
+    >
+      {/* 1. Single-line Text Field (Name) */}
+      <FormTextField
+        name="name"
+        label="Name"
+        control={control}
+        rules={{ required: "Name is required" }}
+      />
 
-const [image,setImage]=useState(
-project?.image || null
-);
+      {/* 2. Multiline Text Field (Description) - Same component with props */}
+      <FormTextField
+        name="description"
+        label="Description"
+        control={control}
+        rules={{ required: "Description is required" }}
+        multiline={true}
+        rows={4}
+      />
 
+      {/* 3. Dropdown Component */}
+      <DropDown control={control} />
 
+      {/* 4. Deadline Component */}
+      <Deadline control={control} />
 
-const {
+      {/* 5. Image Input */}
+      <ImageInput setImage={setImage} />
 
-register,
-
-handleSubmit,
-
-control,
-
-formState:{errors}
-
-}=useForm({
-
-defaultValues: project || {
-
-status:"active"
-
+      <Button type="submit" variant="contained">
+        Save
+      </Button>
+    </Box>
+  );
 }
-
-});
-
-
-
-
-return(
-
-
-<Box
-
-component="form"
-
-onSubmit={handleSubmit((data)=>{
-
-
-addProject({
-
-...data,
-
-image:image
-
-});
-
-
-})}
-
-
-sx={{
-
-display:"flex",
-
-flexDirection:"column",
-
-gap:2,
-
-mt:2
-
-}}
-
-
-
->
-
-
-
-<FormTextField
-
-register={register}
-
-error={errors.name}
-
-/>
-
-
-
-
-<MultilineTextField
-
-register={register}
-
-error={errors.description}
-
-/>
-
-
-
-
-
-<DropDown
-
-control={control}
-
-error={errors.status}
-
-/>
-
-
-
-
-
-<Deadline
-
-register={register}
-
-error={errors.deadline}
-
-/>
-
-
-
-
-
-<ImageInput
-
-setImage={setImage}
-
-/>
-
-
-
-
-<Button
-
-type="submit"
-
-variant="contained"
-
->
-
-Save
-
-</Button>
-
-
-
-</Box>
-
-
-)
-
-
-}
-
-
 
 export default ProjectForm;
